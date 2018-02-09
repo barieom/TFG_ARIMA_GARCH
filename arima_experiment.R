@@ -3,9 +3,9 @@ library(quantmod)
 library(lattice)
 library(timeSeries)
 library(rugarch)
-
+print("start")
 # Obtain the S&P500 returns and truncate the NA value
-getSymbols("^GSPC", from="2010-01-01")
+getSymbols("^GSPC", from="2016-01-01")
 spReturns = diff(log(Cl(GSPC)))
 spReturns[as.character(head(index(Cl(GSPC)),1))] = 0
 
@@ -22,7 +22,7 @@ for (d in 0:foreLength) {
   final.aic <- Inf
   final.order <- c(0,0,0)
   for (p in 0:5) for (q in 0:5) {
-    if ( p == 0 && q == 0) {
+    if ( p == 0 && q == 0) { 
       next
     }
     
@@ -70,6 +70,7 @@ for (d in 0:foreLength) {
 
 # Output the CSV file to "forecasts.csv"
 write.csv(forecasts, file="forecasts.csv", row.names=FALSE)
+print("we print")
 
 # Input the Python-refined CSV file
 spArimaGarch = as.xts( 
@@ -102,4 +103,5 @@ xyplot(
     )
   )
 )
+
 
